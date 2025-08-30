@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>u202f</title>
+    <style>
+        /* --- 基础与全局样式 --- */
+        :root {
+            --primary-color: #3a7ca5; /* 沿用一致的蓝色作为主色调 */
+            --dark-bg: #1a1a1a;
+            --secondary-bg: #2a2a2a;
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #444;
+            --header-height: 81px;
+            --nav-speed: 250ms;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+        }
+        
+        /* 当移动端菜单打开时，禁止body滚动 */
+        .noscroll {
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        /* 设置滚动定位的偏移，防止被固定的头部遮挡 */
+        section[id] { scroll-margin-top: var(--header-height); }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover { color: #fff; }
+        
+        /* 优化键盘用户的焦点样式 */
+        a:focus-visible, .btn:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        .bg-alt { background-color: var(--secondary-bg); }
+
+        /* --- 头部与导航 --- */
+        header {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { display: flex; align-items: center; gap: 15px; font-size: 1.5rem; font-weight: bold; color: var(--text-color); }
+       
+        .logo-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+
+        /* 桌面端导航 */
+        .main-nav ul { padding: 0; margin: 0; list-style: none; display: flex; }
+        .main-nav li { padding: 0 15px; }
+        .main-nav a { color: var(--text-color); text-transform: uppercase; font-weight: bold; font-size: 14px; }
+        
+        /* 移动端导航切换按钮 (汉堡按钮) */
+        .nav-toggle {
+            display: none; /* 默认在桌面端隐藏 */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1010;
+            position: relative;
+            width: 44px;
+            height: 44px;
+        }
+
+        .hamburger {
+            display: block;
+            position: relative;
+            width: 24px;
+            height: 2px;
+            background: var(--text-color);
+            transition: transform var(--nav-speed) ease-in-out;
+        }
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--text-color);
+            left: 0;
+            transition: transform var(--nav-speed) ease-in-out, top var(--nav-speed) ease-in-out;
+        }
+        .hamburger::before { top: -8px; }
+        .hamburger::after { top: 8px; }
+
+        /* 汉堡按钮变为 "X" 的动画 */
+        .nav-toggle.is-active .hamburger { transform: rotate(45deg); }
+        .nav-toggle.is-active .hamburger::before { top: 0; transform: rotate(90deg); }
+        .nav-toggle.is-active .hamburger::after { top: 0; transform: rotate(90deg); }
+        
+
+        /* --- 页面模块样式 --- */
+        .hero { text-align: center; padding: 80px 0; }
+        .hero .hero-name { font-size: 3rem; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .hero .hero-title { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 30px; letter-spacing: 1px; }
+        .hero .hero-slogan { font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 1.5rem; color: var(--primary-color); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        
+        .card { background: var(--secondary-bg); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .card h3 { margin-top: 0; font-size: 1.8rem; color: #fff; }
+        .card p { color: var(--text-secondary); }
+        
+        .btn { display: inline-block; background: var(--primary-color); color: #fff; padding: 12px 25px; border-radius: 5px; font-weight: bold; margin-top: 15px; transition: background-color 0.3s ease; }
+        .btn:hover { background: #4a90c2; color: #fff; }
+        
+        #about .about-content { text-align: center; max-width: 700px; margin: 0 auto; font-size: 1.1rem; }
+        
+        #contact .contact-info { text-align: center; font-size: 1.2rem; }
+        #contact .contact-info p { margin-bottom: 25px; }
+
+        footer { padding: 30px 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--border-color); }
+
+        /* --- 新增：滚动浮现动画 --- */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* --- 响应式媒体查询 --- */
+        @media (max-width: 768px) {
+            .section-title { font-size: 2rem; }
+            .hero .hero-name { font-size: 2.2rem; }
+            section { padding: 40px 0; }
+
+            /* 移动端导航菜单样式 */
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                padding-top: var(--header-height);
+                background: var(--dark-bg);
+                transform: translateX(100%); /* 默认移出屏幕 */
+                transition: transform var(--nav-speed) ease-in-out;
+                z-index: 1005;
+            }
+            .main-nav.is-open {
+                transform: translateX(0); /* 激活时滑入 */
+                box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+            }
+            .main-nav ul { flex-direction: column; height: 100%; }
+            .main-nav li { width: 100%; text-align: center; }
+            .main-nav a {
+                display: block;
+                padding: 20px;
+                font-size: 1.2rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .main-nav a:hover { background: var(--secondary-bg); }
+
+            /* 在移动端显示汉堡按钮 */
+            .nav-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-container">
+            <a href="#" aria-label="返回主页" class="logo-area">
+                <img src="" alt="icon1" class="logo-avatar">
+            </a>
+            
+            <button class="nav-toggle" aria-label="切换导航菜单" aria-expanded="false">
+                <span class="hamburger"></span>
+            </button>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#projects">项目</a></li>
+                    <li><a href="#blog">博客</a></li>
+                    <li><a href="#contact">社媒</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero bg-alt">
+            <div class="container">
+                <h1 class="hero-name">u202f</h1>
+                <p class="hero-title">开源爱好者, 音乐享受者, Wiki 编者, YT 视频搬译者</p>
+                <p class="hero-slogan">“Tech Otakus Save The Word”</p>
+            </div>
+        </section>
+
+        <section id="projects" class="fade-in-section">
+            <div class="container">
+                <h2 class="section-title">参与项目</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>罗德岛历史与文化办公室</h3>
+                        <p>由明日方舟爱好者自发组建的组织, 目前着力于明日方舟剧情向 Wiki 的建设</p>
+                        <a href="https://github.com/HCAoR" class="btn">查看 GitHub</a>
+                    </div>
+                    <div class="card">
+                        <h3>求闻百科</h3>
+                        <p>求闻百科是基于共笔技术的在线百科全书计划, 由志愿者合作编纂, 旨在创造一部版权开放、质量优良、内容丰富的在线百科全书, 推广“开放版权”“自由及开源软件”等理念, 鼓励并推动知识、信息、数据及文化、艺术、科学等领域内容的创造、传播、利用</p>
+                        <a href="https://www.qiuwenbaike.cn/wiki/Qiuwen:%E9%A6%96%E9%A1%B5" class="btn">访问 求闻百科</a>
+                    </div>
+                    <div class="card">
+                        <h3>网易云音乐歌曲百科</h3>
+                        <p>为网易云音乐提供缺失的歌曲信息 (如滚动歌词、歌词翻译、词/曲/编、MV视频...), 并对现有错误信息进行纠正</p>
+                        <p><s>年轻人给互联网大厂打的的第一份无薪黑工</s></p>
+                        <a href="https://yunxiaobian.com/#wiki" class="btn">点我即刻给网易免费拉磨</a>
+                    </div>
+                    <div class="card">
+                        <h3><s>战争雷霆中文 Wiki</s></h3>
+                        <p>由玩家自发建设的, 基于 BWIKI 平台的战争雷霆 Wiki</p>
+                        <a href="https://wiki.biligame.com/warthunder/%E9%A6%96%E9%A1%B5" class="btn">访问 战争雷霆中文 Wiki</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <section id="blog" class="bg-alt fade-in-section">
+            <div class="container">
+                <h2 class="section-title">博客</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>test</h3>
+                        <p>这里是简介<br><small>2025年8月29日</small></p>
+                        <a href="./blog/test.html" class="btn">阅读更多</a>
+                    </div>
+                </div>
+                <br>
+                <div style="text-align: center;">
+                    <a href="./blog">查看所有文章 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="fade-in-section">
+            <div class="container">
+                <h2 class="section-title">网络平台账号</h2>
+                <div class="contact-info">
+                    <p>欢迎在各网络平台关注我</p>
+                    <p><strong>Bilibili:</strong> <a href="https://space.bilibili.com/571500824">U_0000</a></p>
+                    <p><strong>GitHub:</strong> <a href="https://github.com/u-00a0">u-00a0</a></p>
+                    <p><strong>网易云音乐:</strong> <a href="https://music.163.com/#/user?id=6318897509">u202f</a></p>
+                    <p><strong>其它平台网名汇总:</strong> null, u0000, Silverwing_N-EX, Llun0000 </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>若无额外声明, 本站中文章全部采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/"> 署名—相同方式共享 4.0 协议</a> 进行授权</p>
+            <p>&copy; 2025 u202f, All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 移动端导航菜单逻辑 ---
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.main-nav');
+        const navLinks = document.querySelectorAll('.main-nav a');
+        const body = document.body;
+
+        function openMenu() {
+            navToggle.classList.add('is-active');
+            navToggle.setAttribute('aria-expanded', 'true');
+            navMenu.classList.add('is-open');
+            body.classList.add('noscroll');
+        }
+
+        function closeMenu() {
+            navToggle.classList.remove('is-active');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navMenu.classList.remove('is-open');
+            body.classList.remove('noscroll');
+        }
+
+        navToggle.addEventListener('click', () => {
+            if (navMenu.classList.contains('is-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // 点击导航链接后，自动关闭菜单
+        navLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // --- 滚动动画逻辑 ---
+        const animatedSections = document.querySelectorAll('.fade-in-section');
+
+        // 使用 Intersection Observer API 提高性能
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // 当元素进入视口时，添加 is-visible 类
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1 // 元素可见 10% 时触发
+        });
+
+        // 观察所有带动画的区块
+        animatedSections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
