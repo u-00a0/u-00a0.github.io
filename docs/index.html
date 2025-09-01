@@ -164,7 +164,18 @@
         #contact .contact-info { text-align: center; font-size: 1.2rem; }
         #contact .contact-info p { margin-bottom: 25px; }
 
+        /* 新增：赞助区域居中 */
+        .sponsor-info {
+            text-align: center;
+        }
+
         footer { padding: 30px 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--border-color); }
+        /* 页脚图片默认是 inline, text-align: center 会使其居中, 但为确保一致性可以加上 margin auto */
+        footer img {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
 
         /* --- 新增：滚动浮现动画 --- */
         .fade-in-section {
@@ -370,6 +381,9 @@
         <div class="container">
             <p>若无额外声明, 本站中文章全部采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/"> 署名—相同方式共享 4.0 协议</a> 进行授权</p>
             <p>&copy; 2025 u202f, All Rights Reserved</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative Commons BY-SA 4.0 License">
+                <img src="https://raw.githubusercontent.com/HCAoR/HCAoR.github.io/3f9952ea0e8971014d81aaa4950d7619c11d728e/assets/cc-by-sa.svg" alt="CC BY-SA 4.0 许可证" width="88" height="31" style="filter: invert(1);">
+            </a>
         </div>
     </footer>
 
@@ -435,7 +449,7 @@
         window.addEventListener('scroll', () => {
             // 当垂直滚动超过 400px 时显示按钮
             if (window.scrollY > 400) {
-                if(backToTopButton) backToTopButton.classList.add('is-visible');
+                if(backToTopsButton) backToTopButton.classList.add('is-visible');
             } else {
                 if(backToTopButton) backToTopButton.classList.remove('is-visible');
             }
